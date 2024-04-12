@@ -180,7 +180,9 @@ thumb
 sketch
 
 ### VisualStudioCode ###
+.vscode
 .vscode/*
+.vite
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
