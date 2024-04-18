@@ -19,6 +19,11 @@ export const getAllRecipes = async () => {
 
 	return response
 }
+export const getAllGeneralRecipes = async () => {
+	const response = await axiosClient.get<RecipeType[]>('recipes/general')
+
+	return response
+}
 export const getRecipeLogo = async (id: string) => {
 	const response = await axiosClient.get(`recipes/logo/${id}`, {
 		responseType: 'blob',
@@ -51,5 +56,27 @@ export const updateRecipe = async (recipe: RecipeType) => {
 			},
 		}
 	)
+	return response
+}
+export const getAllFavorites = async () => {
+	const response = await axiosClient.get<RecipeType[]>('favoritesrecipes')
+
+	return response
+}
+export const getFavoritesId = async () => {
+	const response = await axiosClient.get<string[]>(`favoritesrecipes/list`)
+
+	return response
+}
+
+export const addFavoriteById = async (id: string) => {
+	const response = await axiosClient.post<string>(`favoritesrecipes/${id}`)
+
+	return response
+}
+
+export const removeFavoriteById = async (id: string) => {
+	const response = await axiosClient.delete<string>(`favoritesrecipes/${id}`)
+
 	return response
 }

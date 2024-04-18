@@ -4,4 +4,5 @@ export type RecipeType = {
 	description?: string
 	procedures: string
 	logo?: File[] | null
+	createdBy?: string
 }
