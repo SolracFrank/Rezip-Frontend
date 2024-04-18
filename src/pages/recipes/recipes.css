@@ -129,6 +129,7 @@
 	right: 4px;
 	cursor: pointer;
 }
+
 .favorite-btn {
 	position: absolute;
 	top: 4px;
@@ -136,16 +137,30 @@
 	cursor: pointer;
 }
 
-.favorite-btn svg:hover {
-	fill: rgb(255, 151, 151);
-}
-
-.favorite-btn-loading svg {
-	fill: rgb(255, 151, 151);
-}
-
-.favorite svg {
+.fill-favorite {
 	fill: rgb(255, 50, 50);
+}
+
+.fill-hovering:hover {
+	fill: rgb(255, 151, 151);
+}
+
+@keyframes load-favorite {
+	0%,
+	25% {
+		fill: rgb(255, 151, 151, 0.5);
+	}
+	50%,
+	75% {
+		fill: rgb(255, 151, 151, 0.75);
+	}
+	100% {
+		fill: rgb(255, 151, 151);
+	}
+}
+
+.fill-loading {
+	animation: load-favorite 1s infinite;
 }
 
 .view-container {

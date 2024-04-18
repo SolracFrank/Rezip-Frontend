@@ -1,19 +1,18 @@
 import { useEffect, useState } from 'react'
 import { BookHeart, ChefHat, CirclePlus, Menu } from 'lucide-react'
 
+import { useRecipes } from '../../context/recipeContext'
 import CreateRecipe from '../recipes/createRecipe'
+import ShowFavorites from '../recipes/favorites'
 import ShowRecipes from '../recipes/showRecipes'
 import ViewRecipe from '../recipes/viewRecipe'
 
 import { ShowContentEnum } from './contentEnum'
 
 const Dashboard = () => {
+	const { handleBack, handleShowContent, recipeEdit, showContent, owner } =
+		useRecipes()
 	const [sidebarOpen, setSidebarOpen] = useState(true)
-	const [recipeEdit, setRecipeEdit] = useState('')
-
-	const [showContent, setShowContent] = useState<ShowContentEnum>(
-		ShowContentEnum.ShowRecipes
-	)
 
 	useEffect(() => {
 		const handleResize = () => {
@@ -30,26 +29,6 @@ const Dashboard = () => {
 		}
 	}, [])
 
-	const handleShowContent = (
-		e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-	) => {
-		if (e.target instanceof HTMLButtonElement) {
-			const { name } = e.target
-			if (Object.values(ShowContentEnum).includes(name as ShowContentEnum)) {
-				setShowContent(name as ShowContentEnum)
-			}
-		}
-	}
-
-	const handleUpdateContent = (id: string) => {
-		setRecipeEdit(id)
-		setShowContent(ShowContentEnum.View)
-	}
-
-	const handleBack = (value: ShowContentEnum) => {
-		setRecipeEdit('')
-		setShowContent(value)
-	}
 	return (
 		<div>
 			<nav className='dashboard-nav'>
@@ -87,10 +66,7 @@ const Dashboard = () => {
 			<section className='dashboard-content'>
 				{showContent == ShowContentEnum.ShowRecipes && (
 					<>
-						<ShowRecipes
-							handleShowContent={handleShowContent}
-							updateCard={handleUpdateContent}
-						/>
+						<ShowRecipes />
 					</>
 				)}
 				{showContent == ShowContentEnum.AddRecipes && (
@@ -98,9 +74,16 @@ const Dashboard = () => {
 						<CreateRecipe />
 					</>
 				)}
-				{showContent == ShowContentEnum.Favorites && <></>}
+				{showContent == ShowContentEnum.Favorites && (
+					<>
+						<ShowFavorites />
+					</>
+				)}
 				{showContent == ShowContentEnum.View && (
-					<ViewRecipe id={recipeEdit} handleBack={handleBack}></ViewRecipe>
+					<ViewRecipe
+						id={recipeEdit}
+						handleBack={handleBack}
+						owner={owner}></ViewRecipe>
 				)}
 			</section>
 		</div>

@@ -21,9 +21,10 @@ import './recipes.css'
 interface ViewRecipeProps {
 	id: string
 	handleBack: (value: ShowContentEnum) => void
+	owner?: string
 }
 
-const ViewRecipe = ({ id, handleBack }: ViewRecipeProps) => {
+const ViewRecipe = ({ id, handleBack, owner }: ViewRecipeProps) => {
 	const [loading, setLoading] = useState(false)
 	const [recipe, setRecipe] = useState<RecipeType>()
 	const [isEdit, setIsEdit] = useState(false)
@@ -31,7 +32,6 @@ const ViewRecipe = ({ id, handleBack }: ViewRecipeProps) => {
 	const [newLogo, setNewLogo] = useState<string>()
 
 	const { showToast } = useToast()
-
 	const token = useAuthToken()
 
 	const titleRef = useRef<HTMLDivElement>(null)
@@ -51,11 +51,13 @@ const ViewRecipe = ({ id, handleBack }: ViewRecipeProps) => {
 		try {
 			await token()
 			setLoading(true)
+			console.log(id)
 
 			const r = await getRecipeById(id)
 			setRecipe(r.data)
 			reset(r.data)
 		} catch (error) {
+			console.log(error)
 			handleBack(ShowContentEnum.ShowRecipes)
 		} finally {
 			setLoading(false)
@@ -132,18 +134,20 @@ const ViewRecipe = ({ id, handleBack }: ViewRecipeProps) => {
 								placeholder=''
 							/>
 						</div>
-						<button
-							type='button'
-							name='edit-logo'
-							title='edit-logo'
-							className='edit-icon'
-							onClick={() => {
-								setIsEdit(prev => !prev)
-								setSelectedFile(undefined)
-								setNewLogo(undefined)
-							}}>
-							{isEdit ? <XCircleIcon /> : <Edit />}
-						</button>
+						{!(owner && owner.trim().length > 0) && (
+							<button
+								type='button'
+								name='edit-logo'
+								title='edit-logo'
+								className='edit-icon'
+								onClick={() => {
+									setIsEdit(prev => !prev)
+									setSelectedFile(undefined)
+									setNewLogo(undefined)
+								}}>
+								{isEdit ? <XCircleIcon /> : <Edit />}
+							</button>
+						)}
 					</div>
 					<div className='view-image-container'>
 						<label htmlFor={`${isEdit && 'file'}`}>
