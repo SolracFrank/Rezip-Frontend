@@ -1,5 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom'
 
+import { RecipeProvider } from '../context/recipeContext'
 import TokenProvider from '../context/tokenContext'
 import MainLayout from '../layouts/main'
 import Protected from '../layouts/protected'
@@ -32,7 +33,11 @@ export const router = createBrowserRouter([
 				path: '/dashboard',
 				children: [
 					{
-						element: <Dashboard />,
+						element: (
+							<RecipeProvider>
+								<Dashboard />
+							</RecipeProvider>
+						),
 						index: true,
 					},
 					{
