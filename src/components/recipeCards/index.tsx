@@ -11,16 +11,22 @@ import CardImage from './cardImage'
 interface CardProps {
 	recipe: RecipeType
 	deleteCard: (id: string) => void
-	updateCard: (id: string) => void
+	updateCard: (id: string, owner?: string) => void
+	deletable?: boolean
 }
-const card = ({ recipe, deleteCard, updateCard }: CardProps) => {
+const card = ({
+	recipe,
+	deleteCard,
+	updateCard,
+	deletable = false,
+}: CardProps) => {
 	const [modalOpen, setModalOpen] = useState(false)
 
-	const { name, id, description, procedures } = recipe
+	const { name, id, description, procedures, createdBy } = recipe
 	return (
 		<div
 			onClick={() => {
-				updateCard(id ?? '')
+				updateCard(id ?? '', createdBy)
 			}}
 			className={clsx('card')}
 			key={id}>
@@ -35,16 +41,26 @@ const card = ({ recipe, deleteCard, updateCard }: CardProps) => {
 					{description}
 				</p>
 				<p className='procedure'>{procedures}</p>
-				<button
-					className='close-btn'
-					title='close-card'
-					name={id}
-					onClick={e => {
-						e.stopPropagation()
-						setModalOpen(true)
-					}}>
-					<XCircleIcon />
-				</button>
+				{createdBy && createdBy.trim().length > 0 && (
+					<>
+						<span>Autor:</span>
+						<p>{createdBy}</p>
+					</>
+				)}
+
+				{deletable && (
+					<button
+						className='close-btn'
+						title='close-card'
+						name={id}
+						onClick={e => {
+							e.stopPropagation()
+							setModalOpen(true)
+						}}>
+						<XCircleIcon />
+					</button>
+				)}
+
 				<AddFavorite id={id ?? ''} />
 			</div>
 			{modalOpen && (
