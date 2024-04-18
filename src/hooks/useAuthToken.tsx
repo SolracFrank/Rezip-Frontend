@@ -15,6 +15,7 @@ const useAuthToken = () => {
 					scope: 'read:current_user',
 				},
 			})
+			console.log(accessToken)
 			axiosClient.setAuthTokenAxios(accessToken)
 		} catch (error) {
 			console.error('Error al obtener el token:', error)
